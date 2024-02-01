@@ -1,2 +1,10 @@
 jwt:
   secret-key: local-secret-key
+
+management:
+  endpoints:
+    web:
+      base-path: /
+  endpoint:
+    health:
+      show-details: always
