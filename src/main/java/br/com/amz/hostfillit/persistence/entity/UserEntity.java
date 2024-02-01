@@ -12,14 +12,14 @@ import java.time.Instant;
 public class UserEntity extends AbstractEntity {
 
 	@Column(nullable = false)
-	private String mail;
+	private String name;
 
 	@Column(nullable = false)
-	private String name;
+	private String mail;
 
 	public UserEntity() {}
 
-	public UserEntity(UUID id, String mail, String name, Instant createdAt, Instant updatedAt) {
+	public UserEntity(UUID id, String name, String mail, Instant createdAt, Instant updatedAt) {
 		super(id, createdAt, updatedAt);
 		this.mail = mail;
 		this.name = name;
