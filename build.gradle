@@ -28,6 +28,8 @@ dependencies {
 
 	// Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.auth0:java-jwt:4.4.0'
+
 }
 
 tasks.named('test') {
