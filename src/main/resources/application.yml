@@ -1,0 +1,2 @@
+jwt:
+  secret-key: local-secret-key
