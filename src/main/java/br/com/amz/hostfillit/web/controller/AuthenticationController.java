@@ -4,6 +4,7 @@ import br.com.amz.hostfillit.usecases.service.AuthenticationService;
 import br.com.amz.hostfillit.web.dto.ResponseMessage;
 import br.com.amz.hostfillit.web.dto.SignInRequestDTO;
 import br.com.amz.hostfillit.web.dto.SignInResponseDTO;
+import br.com.amz.hostfillit.web.dto.SignUpRequestDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,24 @@ public class AuthenticationController {
             }
 
             final var message = "Error while trying to sign in";
+
+            return ResponseEntity.internalServerError().body(new ResponseMessage(message));
+        }
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> signUp(@RequestBody final SignUpRequestDTO signUp) {
+        try {
+            signUp.validate();
+            final var token = service.signUp(signUp.toModel());
+
+            return ResponseEntity.ok(new SignInResponseDTO(token));
+        } catch (Exception e) {
+            if (e instanceof IllegalArgumentException) {
+                return ResponseEntity.badRequest().body(new ResponseMessage(e.getMessage()));
+            }
+
+            final var message = "Error while trying to sign up";
 
             return ResponseEntity.internalServerError().body(new ResponseMessage(message));
         }
