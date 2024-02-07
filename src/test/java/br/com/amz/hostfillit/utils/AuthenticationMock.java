@@ -2,7 +2,6 @@ package br.com.amz.hostfillit.utils;
 
 import br.com.amz.hostfillit.usecases.domain.Authentication;
 import br.com.amz.hostfillit.usecases.domain.User;
-import java.time.Instant;
 import java.util.UUID;
 
 public class AuthenticationMock {
@@ -12,8 +11,6 @@ public class AuthenticationMock {
     private String password;
     private boolean isActive;
     private User user;
-    private Instant createdAt;
-    private Instant updatedAt;
 
     public AuthenticationMock() {
         this.id = UUID.randomUUID();
@@ -21,8 +18,6 @@ public class AuthenticationMock {
         this.password = "password";
         this.user = new UserMock().build();
         this.isActive = true;
-        this.createdAt = Instant.now();
-        this.updatedAt = Instant.now();
     }
 
     public AuthenticationMock id(UUID id) {
@@ -50,17 +45,7 @@ public class AuthenticationMock {
         return this;
     }
 
-    public AuthenticationMock createdAt(Instant createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    public AuthenticationMock updatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-        return this;
-    }
-
     public Authentication build() {
-        return new Authentication(id, username, password, isActive, user, createdAt, updatedAt);
+        return new Authentication(id, username, password, isActive, user);
     }
 }

@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.util.UUID;
-import java.time.Instant;
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "IX_user_mail", columnNames = {"mail"}))
@@ -19,8 +18,8 @@ public class UserEntity extends AbstractEntity {
 
 	public UserEntity() {}
 
-	public UserEntity(UUID id, String name, String mail, Instant createdAt, Instant updatedAt) {
-		super(id, createdAt, updatedAt);
+	public UserEntity(UUID id, String name, String mail) {
+		super(id);
 		this.mail = mail;
 		this.name = name;
 	}

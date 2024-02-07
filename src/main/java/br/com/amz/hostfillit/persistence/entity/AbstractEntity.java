@@ -28,21 +28,11 @@ abstract class AbstractEntity {
 
     public AbstractEntity() { }
 
-    public AbstractEntity(final UUID id, final Instant createdAt, final Instant updatedAt) {
+    public AbstractEntity(final UUID id) {
         this.id = id;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public UUID getId() {
         return this.id;
-    }
-
-    public Instant getCreatedAt() {
-        return this.createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return this.updatedAt;
     }
 }

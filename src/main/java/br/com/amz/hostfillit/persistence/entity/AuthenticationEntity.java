@@ -6,7 +6,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -34,10 +33,8 @@ public class AuthenticationEntity extends AbstractEntity {
 								final String username,
 								final String password,
 								final boolean isActive,
-								final UserEntity userEntity,
-								final Instant createdAt,
-								final Instant updatedAt) {
-		super(id, createdAt, updatedAt);
+								final UserEntity userEntity) {
+		super(id);
 		this.username = username;
 		this.password = password;
 		this.isActive = isActive;

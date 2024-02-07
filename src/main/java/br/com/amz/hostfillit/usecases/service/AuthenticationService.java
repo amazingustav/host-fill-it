@@ -1,8 +1,8 @@
 package br.com.amz.hostfillit.usecases.service;
 
+import br.com.amz.hostfillit.cryptography.service.CryptographyService;
 import br.com.amz.hostfillit.usecases.adapter.AuthenticationAdapter;
 import br.com.amz.hostfillit.usecases.domain.Authentication;
-import br.com.amz.hostfillit.cryptography.service.CryptographyService;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +40,8 @@ public class AuthenticationService {
             final var user = userService.findOrCreateSignUp(authentication.user());
             final var hashedPassword = cryptographyService.encrypt(authentication.password());
 
-            final var validAuthentication = new Authentication(null,
-                    authentication.username(), hashedPassword, true, user, null, null);
+            final var validAuthentication = new Authentication(null, authentication.username(),
+                    hashedPassword, true, user);
 
             adapter.create(validAuthentication);
 
