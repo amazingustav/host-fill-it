@@ -10,7 +10,7 @@ public record Authentication(UUID id, String username, String password, boolean 
 	public static Authentication fromEntity(final AuthenticationEntity entity) {
 		final var user = User.fromEntity(entity.getUserEntity());
 		return new Authentication(entity.getId(), entity.getUsername(), entity.getPassword(),
-				entity.isActive(), user, entity.getCreatedAt(), entity.getUpdatedAt());
+				entity.isIsActive(), user, entity.getCreatedAt(), entity.getUpdatedAt());
 	}
 
 	public AuthenticationEntity toEntity() {

@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuthenticationRepository extends CrudRepository<AuthenticationEntity, UUID> {
-    Optional<AuthenticationEntity> findByUsernameAndActiveIsTrue(final String username);
+    Optional<AuthenticationEntity> findByUsernameAndIsActiveTrue(final String username);
 }

@@ -20,7 +20,7 @@ public class AuthenticationEntity extends AbstractEntity {
 
 	private String password;
 
-	private boolean active;
+	private boolean isActive;
 
 	@OneToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -33,14 +33,14 @@ public class AuthenticationEntity extends AbstractEntity {
 	public AuthenticationEntity(final UUID id,
 								final String username,
 								final String password,
-								final boolean active,
+								final boolean isActive,
 								final UserEntity userEntity,
 								final Instant createdAt,
 								final Instant updatedAt) {
 		super(id, createdAt, updatedAt);
 		this.username = username;
 		this.password = password;
-		this.active = active;
+		this.isActive = isActive;
 		this.userEntity = userEntity;
 	}
 
@@ -53,8 +53,8 @@ public class AuthenticationEntity extends AbstractEntity {
 		return this.password;
 	}
 
-	public boolean isActive() {
-		return this.active;
+	public boolean isIsActive() {
+		return this.isActive;
 	}
 
 	public UserEntity getUserEntity() {

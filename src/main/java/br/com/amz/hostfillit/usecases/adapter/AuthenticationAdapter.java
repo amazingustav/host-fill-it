@@ -15,7 +15,7 @@ public class AuthenticationAdapter {
 	}
 
 	public Authentication findActive(final String username) throws ResourceNotFoundException {
-		final var entity = repository.findByUsernameAndActiveIsTrue(username)
+		final var entity = repository.findByUsernameAndIsActiveTrue(username)
 				.orElseThrow(() -> new ResourceNotFoundException("Couldn't find an active login for username " + username));
 
 		return Authentication.fromEntity(entity);

@@ -36,21 +36,21 @@ public class AuthenticationAdapterTest {
         // Given
         final var username = "testUser";
         final var entity = new AuthenticationMock().username(username).build().toEntity();
-        when(repository.findByUsernameAndActiveIsTrue(username)).thenReturn(Optional.of(entity));
+        when(repository.findByUsernameAndIsActiveTrue(username)).thenReturn(Optional.of(entity));
 
         // When
         final var result = adapter.findActive(username);
 
         // Then
         assertNotNull(result);
-        verify(repository).findByUsernameAndActiveIsTrue(username);
+        verify(repository).findByUsernameAndIsActiveTrue(username);
     }
 
     @Test
     public void findActive_WhenUserNotExists_ThrowsResourceNotFoundException() {
         // Given
         final var username = "nonExistingUser";
-        when(repository.findByUsernameAndActiveIsTrue(username)).thenReturn(Optional.empty());
+        when(repository.findByUsernameAndIsActiveTrue(username)).thenReturn(Optional.empty());
 
         // When & Then
         assertThrows(ResourceNotFoundException.class, () -> adapter.findActive(username));
