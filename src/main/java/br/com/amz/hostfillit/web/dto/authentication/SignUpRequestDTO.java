@@ -1,4 +1,4 @@
-package br.com.amz.hostfillit.web.dto;
+package br.com.amz.hostfillit.web.dto.authentication;
 
 import br.com.amz.hostfillit.usecases.domain.Authentication;
 import br.com.amz.hostfillit.usecases.domain.User;
@@ -14,9 +14,9 @@ public record SignUpRequestDTO(String name, String mail, String username, String
     }
 
     public Authentication toModel() {
-        final var user = new User(null, name, mail, null, null);
+        final var user = new User(null, name, mail);
 
-        return new Authentication(null, username, password, true, user, null, null);
+        return new Authentication(null, username, password, true, user);
     }
 }
 

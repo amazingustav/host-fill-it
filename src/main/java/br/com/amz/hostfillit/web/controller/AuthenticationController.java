@@ -2,9 +2,9 @@ package br.com.amz.hostfillit.web.controller;
 
 import br.com.amz.hostfillit.usecases.service.AuthenticationService;
 import br.com.amz.hostfillit.web.dto.ResponseMessage;
-import br.com.amz.hostfillit.web.dto.SignInRequestDTO;
-import br.com.amz.hostfillit.web.dto.SignInResponseDTO;
-import br.com.amz.hostfillit.web.dto.SignUpRequestDTO;
+import br.com.amz.hostfillit.web.dto.authentication.SignInRequestDTO;
+import br.com.amz.hostfillit.web.dto.authentication.SignInResponseDTO;
+import br.com.amz.hostfillit.web.dto.authentication.SignUpRequestDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -1,4 +1,4 @@
-package br.com.amz.hostfillit.web.dto;
+package br.com.amz.hostfillit.web.dto.authentication;
 
 import org.springframework.util.Assert;
 
