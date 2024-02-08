@@ -1,8 +1,8 @@
 package br.com.amz.hostfillit.usecases.adapter;
 
 import br.com.amz.hostfillit.persistence.repository.UserRepository;
-import br.com.amz.hostfillit.usecases.exception.ResourceNotFoundException;
 import br.com.amz.hostfillit.usecases.domain.User;
+import br.com.amz.hostfillit.usecases.exception.ResourceNotFoundException;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
 
@@ -16,17 +16,15 @@ public class UserAdapter {
 	}
 
 	public User findById(final UUID id) {
-		final var entity = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Couldn't find a user using its ID: " + id));
-
-		return User.fromEntity(entity);
+		return repository.findById(id)
+				.map(User::fromEntity)
+				.orElse(null);
 	}
 
 	public User findByMail(final String mail) {
-		final var entity = repository.findByMail(mail)
-				.orElseThrow(() -> new ResourceNotFoundException("Couldn't find a user using its mail: " + mail));
-
-		return User.fromEntity(entity);
+		return repository.findByMail(mail)
+				.map(User::fromEntity)
+				.orElse(null);
 	}
 
 	public User create(final User data) {

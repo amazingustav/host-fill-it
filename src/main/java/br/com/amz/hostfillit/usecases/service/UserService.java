@@ -17,22 +17,17 @@ public class UserService {
     }
 
     public User findById(final UUID id) {
-        return adapter.findById(id);
+        final var user = adapter.findById(id);
+        if (user == null) throw new ResourceNotFoundException("User not found for the given ID");
+
+        return user;
     }
 
     public User findOrCreateSignUp(final User user) {
-        try {
-            final var existenUser = adapter.findByMail(user.mail());
+        final var existenUser = adapter.findByMail(user.mail());
 
-            if (existenUser != null) throw new IllegalArgumentException("User already exists");
-        } catch (ResourceNotFoundException e) {
-            return this.create(user);
-        }
+        if (existenUser != null) throw new IllegalArgumentException("User already exists");
 
-        return this.create(user);
-    }
-
-    public User create(final User user) {
         return adapter.create(user);
     }
 }

@@ -15,6 +15,12 @@ public class BookingAdapter {
 		this.repository = repository;
 	}
 
+	public Booking findById(final UUID bookingId) {
+		return repository.findById(bookingId)
+				.map(Booking::fromEntity)
+				.orElse(null);
+	}
+
 	public List<Booking> findByPropertyId(final UUID propertyId) {
 		return repository.findByPropertyIdAndIsActiveTrue(propertyId).stream()
 				.map(Booking::fromEntity)
@@ -22,8 +28,15 @@ public class BookingAdapter {
 	}
 
 	public Booking create(final Booking data) {
-		final var entity = repository.save(data.toEntity());
+		return this.save(data);
+	}
 
+	public Booking update(final Booking data) {
+		return this.save(data);
+	}
+
+	private Booking save(final Booking data) {
+		final var entity = repository.save(data.toEntity());
 		return Booking.fromEntity(entity);
 	}
 }
