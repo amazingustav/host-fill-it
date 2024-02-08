@@ -2,16 +2,20 @@ package br.com.amz.hostfillit.usecases.service;
 
 import br.com.amz.hostfillit.usecases.adapter.BookingAdapter;
 import br.com.amz.hostfillit.usecases.domain.Booking;
+import br.com.amz.hostfillit.usecases.exception.DateOverlapException;
 import br.com.amz.hostfillit.web.dto.booking.CreateBookingDTO;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookingService {
 
+    private static final Logger LOGGER = LogManager.getLogger(BookingService.class);
     private final BookingAdapter adapter;
     private final BlockService blockService;
     private final PropertyService propertyService;
@@ -33,17 +37,28 @@ public class BookingService {
         final var bookingOverlapCheck = CompletableFuture.runAsync(() ->
                 this.checkBookingOverlap(bookingDto.propertyId(), bookingDto.startDate(), bookingDto.endDate()))
                 .exceptionally((ex) -> {
-                    throw new IllegalStateException("Booking overlap check failed", ex);
+                    if (ex instanceof DateOverlapException)
+                        throw (DateOverlapException) ex;
+                    throw new RuntimeException("Booking overlap check failed", ex);
                 });
 
         final var blockOverlapCheck = CompletableFuture.runAsync(() ->
                 blockService.checkBlockOverlap(bookingDto.propertyId(), bookingDto.startDate(), bookingDto.endDate()))
                 .exceptionally((ex) -> {
-                    throw new IllegalStateException("Block overlap check failed", ex);
+                    if (ex instanceof DateOverlapException)
+                        throw (DateOverlapException) ex;
+                    throw new RuntimeException("Block overlap check failed", ex);
                 });
 
         // Wait for both checks to complete
-        CompletableFuture.allOf(bookingOverlapCheck, blockOverlapCheck).join();
+        final var asyncOverlapChecks = CompletableFuture.allOf(bookingOverlapCheck, blockOverlapCheck);
+
+        try {
+            asyncOverlapChecks.join();
+        } catch (RuntimeException e) {
+            LOGGER.error("Error while trying to check booking and block overlap: " + e.getMessage());
+            throw e;
+        }
 
         final var property = propertyService.findById(bookingDto.propertyId());
         final var guest = userService.findById(bookingDto.guestId());
@@ -64,7 +79,7 @@ public class BookingService {
 
         existingBookings.forEach((existingBooking) -> {
             if (existingBooking.hasDateOverlap(startDate, endDate)) {
-                throw new IllegalStateException("Requested dates overlap with an existing booking");
+                throw new DateOverlapException("Requested dates overlap with an existing booking");
             }
         });
     }

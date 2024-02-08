@@ -1,5 +1,6 @@
 package br.com.amz.hostfillit.web.controller;
 
+import br.com.amz.hostfillit.usecases.exception.DateOverlapException;
 import br.com.amz.hostfillit.usecases.service.BookingService;
 import br.com.amz.hostfillit.web.dto.ResponseCreated;
 import br.com.amz.hostfillit.web.dto.ResponseMessage;
@@ -29,6 +30,10 @@ public class BookingController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseCreated(createdBooking.id()));
         } catch (Exception e) {
+            if (e instanceof DateOverlapException) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(new ResponseMessage(e.getMessage()));
+            }
+
             if (e instanceof IllegalArgumentException) {
                 return ResponseEntity.badRequest().body(new ResponseMessage(e.getMessage()));
             }

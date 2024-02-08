@@ -2,6 +2,7 @@ package br.com.amz.hostfillit.usecases.service;
 
 import br.com.amz.hostfillit.usecases.adapter.BlockAdapter;
 import br.com.amz.hostfillit.usecases.domain.Block;
+import br.com.amz.hostfillit.usecases.exception.DateOverlapException;
 import java.time.LocalDate;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class BlockService {
 
         existingBlocks.forEach((existingBlock) -> {
             if (existingBlock.hasDateOverlap(startDate, endDate)) {
-                throw new IllegalStateException("Requested dates overlap with an existing booking");
+                throw new DateOverlapException("Requested dates overlap with an existing booking");
             }
         });
     }
