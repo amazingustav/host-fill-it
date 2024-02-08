@@ -3,7 +3,9 @@ package br.com.amz.hostfillit.usecases.service;
 import br.com.amz.hostfillit.usecases.adapter.UserAdapter;
 import br.com.amz.hostfillit.usecases.exception.ResourceNotFoundException;
 import br.com.amz.hostfillit.usecases.domain.User;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserService {
@@ -12,6 +14,10 @@ public class UserService {
 
     public UserService(final UserAdapter adapter) {
         this.adapter = adapter;
+    }
+
+    public User findById(final UUID id) {
+        return adapter.findById(id);
     }
 
     public User findOrCreateSignUp(final User user) {
