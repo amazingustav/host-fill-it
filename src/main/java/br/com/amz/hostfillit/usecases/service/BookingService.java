@@ -6,6 +6,7 @@ import br.com.amz.hostfillit.web.dto.booking.CreateBookingDTO;
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,9 +29,21 @@ public class BookingService {
 
     @Transactional
     public Booking createBooking(CreateBookingDTO bookingDto) {
-        this.checkBookingOverlap(bookingDto.propertyId(), bookingDto.startDate(), bookingDto.endDate());
+        // Check async if the requested booking overlaps with an existing booking or block
+        final var bookingOverlapCheck = CompletableFuture.runAsync(() ->
+                this.checkBookingOverlap(bookingDto.propertyId(), bookingDto.startDate(), bookingDto.endDate()))
+                .exceptionally((ex) -> {
+                    throw new IllegalStateException("Booking overlap check failed", ex);
+                });
 
-        blockService.checkBlockOverlap(bookingDto.propertyId(), bookingDto.startDate(), bookingDto.endDate());
+        final var blockOverlapCheck = CompletableFuture.runAsync(() ->
+                blockService.checkBlockOverlap(bookingDto.propertyId(), bookingDto.startDate(), bookingDto.endDate()))
+                .exceptionally((ex) -> {
+                    throw new IllegalStateException("Block overlap check failed", ex);
+                });
+
+        // Wait for both checks to complete
+        CompletableFuture.allOf(bookingOverlapCheck, blockOverlapCheck).join();
 
         final var property = propertyService.findById(bookingDto.propertyId());
         final var guest = userService.findById(bookingDto.guestId());
